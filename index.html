@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Figuras Geométricas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Calculadora de Figuras Geométricas</h1>
+
+    <div id="calculadora">
+        <div id="selector-figura">
+            <button class="figura-btn" data-figura="rectangulo"><i class="fas fa-square"></i> Rectángulo</button>
+            <button class="figura-btn" data-figura="circulo"><i class="fas fa-circle"></i> Círculo</button>
+            <button class="figura-btn" data-figura="cuadrado"><i class="fas fa-square"></i> Cuadrado</button>
+            <button class="figura-btn" data-figura="triangulo"><i class="fas fa-triangle"></i> Triángulo</button>
+        </div>
+
+        <div id="figura-container">
+            <svg id="figura-svg" width="200" height="200"></svg>
+        </div>
+
+        <div id="input-container">
+            <!-- Los campos de entrada se generarán dinámicamente con JavaScript -->
+        </div>
+
+        <button id="calcular">Calcular</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
