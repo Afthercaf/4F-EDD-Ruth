@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prácticas Recursividad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Prácticas de Recursividad</h1>
+        
+        <!-- Factorial -->
+        <div class="section">
+            <h2>Factorial</h2>
+            <input type="number" id="factorialInput" placeholder="Introduce un número mayor o igual a 0">
+            <button onclick="calcularFactorial()">Calcular Factorial</button>
+            <p id="factorialResultado"></p>
+            <script src="factorial.js"></script>
+        </div>
+        
+        <!-- Fibonacci -->
+        <div class="section">
+            <h2>Fibonacci</h2>
+            <input type="number" id="fibonacciInput" placeholder="Introduce el número de términos">
+            <button onclick="calcularFibonacci()">Mostrar Fibonacci</button>
+            <p id="fibonacciResultado"></p>
+            <script src="fibonacci.js"></script>
+        </div>
+        
+        <!-- MCD -->
+        <div class="section">
+            <h2>MCD (Máximo Común Divisor)</h2>
+            <input type="number" id="mcdInput1" placeholder="Primer número">
+            <input type="number" id="mcdInput2" placeholder="Segundo número">
+            <button onclick="calcularMCD()">Calcular MCD</button>
+            <p id="mcdResultado"></p>
+            <script src="mcd.js"></script>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
