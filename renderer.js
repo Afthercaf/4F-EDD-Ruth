@@ -14,9 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
         rectangulo: {
             campos: ['base', 'altura'],
             calculo: (base, altura) => {
+                if ( base === altura ) {
+                    resultadoDiv.textContent = 'Eso no es un rectangulo';
+                    const sul = resultadoDiv.textContent;
+                    return sul;
+                }        
+                else {
                  area = base * altura;
                  perimetro = 2 * (base + altura);
-                return `Área: ${area.toFixed(2)}, Perímetro: ${perimetro.toFixed(2)}`;
+                return `Área: ${area.toFixed(2)}, Perímetro: ${perimetro.toFixed(2)}`;}
             },
             dibujar: (base, altura) => {
                 const escala = Math.min(200 / base, 200 / altura);
@@ -58,9 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 escaleno: ['lado1', 'lado2', 'lado3']
             },
             calculo: (lado1, lado2, lado3) => {
+                // Validar si los lados forman un triángulo
+                if (lado1 + lado2 <= lado3 || lado1 + lado3 <= lado2 || lado2 + lado3 <= lado1) {
+                    return 'Los lados proporcionados no forman un triángulo.';
+                }
+            
                 const s = (lado1 + lado2 + lado3) / 2;
-                 area = Math.sqrt(s * (s - lado1) * (s - lado2) * (s - lado3));
-                 perimetro = lado1 + lado2 + lado3;
+                area = Math.sqrt(s * (s - lado1) * (s - lado2) * (s - lado3));
+                perimetro = lado1 + lado2 + lado3;
                 return `Área: ${area.toFixed(2)}, Perímetro: ${perimetro.toFixed(2)}`;
             },
             dibujar: (lado1, lado2, lado3) => {
@@ -213,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resultado = figuras[figuraActual].calculo(...valores);
         resultadoDiv.textContent = resultado;
+        sul;
     });
 
     // Inicializar con el primer botón de figura
