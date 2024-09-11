@@ -1,4 +1,4 @@
-// Función para calcular el término Fibonacci usando recursividad
+
 function fibonacci(n) {
     if (n === 0) {
         return 0;
@@ -9,7 +9,6 @@ function fibonacci(n) {
     }
 }
 
-// Función para manejar el cálculo de la serie de Fibonacci en la interfaz
 function calcularFibonacci() {
     const terminos = parseInt(document.getElementById("fibonacciInput").value);
     let resultado = "";

@@ -1,5 +1,4 @@
 
-// Función para calcular el MCD usando recursividad
 function mcd(a, b) {
     if (b === 0) {
         return a;
@@ -8,7 +7,6 @@ function mcd(a, b) {
     }
 }
 
-// Función para manejar el cálculo del MCD en la interfaz
 function calcularMCD() {
     const num1 = parseInt(document.getElementById("mcdInput1").value);
     const num2 = parseInt(document.getElementById("mcdInput2").value);
