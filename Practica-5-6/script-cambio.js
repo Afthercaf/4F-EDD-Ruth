@@ -1,7 +1,7 @@
 document.getElementById('btnCalcularCambio').addEventListener('click', calcularCambio);
 
 function calcularCambio() {
-    const denominaciones = [100, 50, 20, 10, 5, 1, 0.50, 0.20, 0.01];
+    const denominaciones = [100, 50, 20, 10, 5, 1, 0.50, 0.20, 0.05];
     let monto = parseFloat(document.getElementById('amount').value);
     let resultado = document.getElementById('resultado');
     resultado.innerHTML = '';
@@ -25,7 +25,7 @@ function calcularCambio() {
     let salida = '<h2>Cambio:</h2>';
     for (let denom of denominaciones) {
         if (conteoMonedas[denom]) {
-            salida += `${conteoMonedas[denom]} moneda(s) de ${denom.toFixed(2)} pesos<br>`;
+            salida += `${conteoMonedas[denom]} moneda(s) o billete(s) de ${denom.toFixed(2)}<br>`;
         }
     }
 

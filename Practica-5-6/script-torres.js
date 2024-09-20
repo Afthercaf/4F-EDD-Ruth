@@ -12,7 +12,7 @@ function resolverTorres() {
 
     const pasos = [];
     resolver(numDiscos, 'A', 'C', 'B', pasos);
-    
+    // 
     let salida = '<h2>Movimientos:</h2>';
     pasos.forEach(paso => {
         salida += `Mover disco de ${paso[0]} a ${paso[1]}<br>`;
