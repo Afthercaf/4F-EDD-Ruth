@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prácticas EDA - Arreglos Multidimensionales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin: 20px auto;
+            padding:20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .resultados {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .resultados p {
+            margin: 5px 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        td {
+            padding: 5px;
+            text-align: center;
+        }
+        input[type="number"] {
+            width: 50px;
+        }
+        button {
+            margin-right: 10px;
+            padding: 5px 10px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Práctica 11: Matriz de 5x10</h1>
+        <div id="matriz"></div>
+        <button onclick="calcularMatriz()">Calcular</button>
+        <button onclick="generarAleatorios()">Generar Aleatorios</button>
+        <div id="resultado"></div>
+    </div>
+
+
+        <div class="container">
+            <h1>Práctica 12: Ventas por Mes</h1>
+            
+            <p>Ingresa las ventas para cada día de la semana de cada mes:</p>
+    
+            <table id="tablaVentas">
+                <thead>
+                    <tr>
+                        <th>Día</th>
+                        <th>Enero</th>
+                        <th>Febrero</th>
+                        <th>Marzo</th>
+                        <th>Abril</th>
+                        <th>Mayo</th>
+                        <th>Junio</th>
+                        <th>Julio</th>
+                        <th>Agosto</th>
+                        <th>Septiembre</th>
+                        <th>Octubre</th>
+                        <th>Noviembre</th>
+                        <th>Diciembre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lunes</td>
+                        <td><input type="number" id="Lunes_Enero"></td>
+                        <td><input type="number" id="Lunes_Febrero"></td>
+                        <td><input type="number" id="Lunes_Marzo"></td>
+                        <td><input type="number" id="Lunes_Abril"></td>
+                        <td><input type="number" id="Lunes_Mayo"></td>
+                        <td><input type="number" id="Lunes_Junio"></td>
+                        <td><input type="number" id="Lunes_Julio"></td>
+                        <td><input type="number" id="Lunes_Agosto"></td>
+                        <td><input type="number" id="Lunes_Septiembre"></td>
+                        <td><input type="number" id="Lunes_Octubre"></td>
+                        <td><input type="number" id="Lunes_Noviembre"></td>
+                        <td><input type="number" id="Lunes_Diciembre"></td>
+                    </tr>
+                    <tr>
+                        <td>Martes</td>
+                        <td><input type="number" id="Martes_Enero"></td>
+                        <td><input type="number" id="Martes_Febrero"></td>
+                        <td><input type="number" id="Martes_Marzo"></td>
+                        <td><input type="number" id="Martes_Abril"></td>
+                        <td><input type="number" id="Martes_Mayo"></td>
+                        <td><input type="number" id="Martes_Junio"></td>
+                        <td><input type="number" id="Martes_Julio"></td>
+                        <td><input type="number" id="Martes_Agosto"></td>
+                        <td><input type="number" id="Martes_Septiembre"></td>
+                        <td><input type="number" id="Martes_Octubre"></td>
+                        <td><input type="number" id="Martes_Noviembre"></td>
+                        <td><input type="number" id="Martes_Diciembre"></td>
+                    </tr>
+                    <tr>
+                        <td>Miércoles</td>
+                        <td><input type="number" id="Miercoles_Enero"></td>
+                        <td><input type="number" id="Miercoles_Febrero"></td>
+                        <td><input type="number" id="Miercoles_Marzo"></td>
+                        <td><input type="number" id="Miercoles_Abril"></td>
+                        <td><input type="number" id="Miercoles_Mayo"></td>
+                        <td><input type="number" id="Miercoles_Junio"></td>
+                        <td><input type="number" id="Miercoles_Julio"></td>
+                        <td><input type="number" id="Miercoles_Agosto"></td>
+                        <td><input type="number" id="Miercoles_Septiembre"></td>
+                        <td><input type="number" id="Miercoles_Octubre"></td>
+                        <td><input type="number" id="Miercoles_Noviembre"></td>
+                        <td><input type="number" id="Miercoles_Diciembre"></td>
+                    </tr>
+                    <tr>
+                        <td>Jueves</td>
+                        <td><input type="number" id="Jueves_Enero"></td>
+                        <td><input type="number" id="Jueves_Febrero"></td>
+                        <td><input type="number" id="Jueves_Marzo"></td>
+                        <td><input type="number" id="Jueves_Abril"></td>
+                        <td><input type="number" id="Jueves_Mayo"></td>
+                        <td><input type="number" id="Jueves_Junio"></td>
+                        <td><input type="number" id="Jueves_Julio"></td>
+                        <td><input type="number" id="Jueves_Agosto"></td>
+                        <td><input type="number" id="Jueves_Septiembre"></td>
+                        <td><input type="number" id="Jueves_Octubre"></td>
+                        <td><input type="number" id="Jueves_Noviembre"></td>
+                        <td><input type="number" id="Jueves_Diciembre"></td>
+                    </tr>
+                    <tr>
+                        <td>Viernes</td>
+                        <td><input type="number" id="Viernes_Enero"></td>
+                        <td><input type="number" id="Viernes_Febrero"></td>
+                        <td><input type="number" id="Viernes_Marzo"></td>
+                        <td><input type="number" id="Viernes_Abril"></td>
+                        <td><input type="number" id="Viernes_Mayo"></td>
+                        <td><input type="number" id="Viernes_Junio"></td>
+                        <td><input type="number" id="Viernes_Julio"></td>
+                        <td><input type="number" id="Viernes_Agosto"></td>
+                        <td><input type="number" id="Viernes_Septiembre"></td>
+                        <td><input type="number" id="Viernes_Octubre"></td>
+                        <td><input type="number" id="Viernes_Noviembre"></td>
+                        <td><input type="number" id="Viernes_Diciembre"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        
+        <button onclick="generarAleatorio()">Generar Números Aleatorios</button>
+
+        
+        <button onclick="procesarVentas()">Procesar Ventas</button>
+        
+
+        <div class="resultados" id="resultado12"></div>
+        <script src="ventas.js"></script>
+    </div>
+
+    <div class="container">
+        <h1>Práctica 13: Calificaciones</h1>
+        <form id="calificacionesForm">
+            <input type="number" id="numAlumnos" placeholder="Número de alumnos" required>
+            <input type="number" id="numParciales" placeholder="Número de parciales" required>
+            <button type="button" onclick="generarFormulario()">Generar Formulario</button>
+        </form>
+    
+        <div id="formularioAlumnos"></div>
+        <button id="procesarCalificaciones" style="display:none;" onclick="procesarCalificaciones()">Procesar Calificaciones</button>
+    
+        <div class="resultados" id="resultado13"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

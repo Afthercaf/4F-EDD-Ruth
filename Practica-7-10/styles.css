@@ -3,11 +3,11 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #565555;
 }
 
 h1 {
-    color: #333;
+    color: #00c66a;
     text-align: center;
 }
 
@@ -24,7 +24,7 @@ h2 {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #012773;
     border: none;
     color: white;
     padding: 10px 20px;
