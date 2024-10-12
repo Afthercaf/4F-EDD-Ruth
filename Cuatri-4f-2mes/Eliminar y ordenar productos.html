@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar y Ordenar Productos (Lista Ligada)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #ff6347;
+        }
+        button {
+            background-color: #ff6347;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #e5533d;
+        }
+        input {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        p {
+            background-color: #f0e68c;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #formulario {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        // Clase Nodo para la lista ligada simple
+        class LLSNodo {
+            constructor(info, next = null) {
+                this.info = info; // Almacena el producto
+                this.next = next; // Apunta al siguiente nodo
+            }
+        }
+
+        // Clase para manejar la lista ligada simple
+        class ListaLigada {
+            constructor() {
+                this.head = null; // Inicialmente no hay productos
+            }
+
+            // Añadir un nuevo producto a la lista
+            agregar(info) {
+                const nuevoNodo = new LLSNodo(info);
+                if (!this.head) {
+                    this.head = nuevoNodo; // Si la lista está vacía, el nuevo nodo es la cabeza
+                } else {
+                    let actual = this.head;
+                    while (actual.next) {
+                        actual = actual.next; // Recorrer hasta el último nodo
+                    }
+                    actual.next = nuevoNodo; // Añadir al final de la lista
+                }
+            }
+
+            // Recorrer la lista para ejecutar una función en cada nodo
+            recorrer(callback) {
+                let actual = this.head;
+                while (actual) {
+                    callback(actual.info); // Ejecutar callback con la información del producto
+                    actual = actual.next;
+                }
+            }
+
+            // Eliminar un producto por ID
+            eliminar(id) {
+                let actual = this.head;
+                let previo = null;
+
+                while (actual) {
+                    if (actual.info.id === id) {
+                        if (previo) {
+                            previo.next = actual.next; // Saltar el nodo a eliminar
+                        } else {
+                            this.head = actual.next; // Cambiar la cabeza si es el primer nodo
+                        }
+                        return true; // Producto encontrado y eliminado
+                    }
+                    previo = actual;
+                    actual = actual.next;
+                }
+                return false; // Producto no encontrado
+            }
+        }
+
+        // Clase Producto
+        class Producto {
+            constructor(id, nombre, cantidad, precio) {
+                this.id = id;
+                this.nombre = nombre;
+                this.cantidad = cantidad;
+                this.precio = precio;
+            }
+        }
+
+        // Inicializar la lista ligada de productos
+        const listaProductos = new ListaLigada();
+        let idCounter = 1; // Contador para IDs únicos
+
+        // Mostrar los productos en la tabla
+        function mostrarProductos() {
+            let resultado = '';
+            listaProductos.recorrer(producto => {
+                resultado += `ID: ${producto.id}, Nombre: ${producto.nombre}, Cantidad: ${producto.cantidad}, Precio: $${producto.precio.toFixed(2)}<br>`;
+            });
+            document.getElementById("productos").innerHTML = resultado || "No hay productos disponibles.";
+        }
+
+        // Agregar un nuevo producto desde el formulario
+        function agregarProductoDesdeFormulario() {
+            const nombre = document.getElementById("nombreNuevoProducto").value;
+            const precio = parseFloat(document.getElementById("precioNuevoProducto").value);
+            const cantidad = parseInt(document.getElementById("cantidadNuevoProducto").value);
+
+            if (nombre && !isNaN(precio) && precio > 0 && !isNaN(cantidad) && cantidad > 0) {
+                listaProductos.agregar(new Producto(idCounter++, nombre, cantidad, precio));
+                mostrarProductos();
+
+                // Limpiar campos
+                document.getElementById("nombreNuevoProducto").value = '';
+                document.getElementById("precioNuevoProducto").value = '';
+                document.getElementById("cantidadNuevoProducto").value = '';
+            } else {
+                alert("Por favor ingresa un nombre, cantidad y precio válidos.");
+            }
+        }
+
+        // Eliminar un producto por ID
+        function eliminarProducto() {
+            const idProducto = parseInt(document.getElementById("idProducto").value);
+
+            if (!isNaN(idProducto)) {
+                const resultado = listaProductos.eliminar(idProducto);
+                if (resultado) {
+                    alert(`Producto con ID "${idProducto}" eliminado.`);
+                } else {
+                    alert(`Producto con ID "${idProducto}" no encontrado.`);
+                }
+                mostrarProductos();
+            } else {
+                alert("Por favor, ingresa un ID válido.");
+            }
+
+            // Limpiar campo de texto
+            document.getElementById("idProducto").value = '';
+        }
+
+        // Inicializar algunos productos de ejemplo
+        listaProductos.agregar(new Producto(idCounter++, "Manzana", 50, 1.25));
+        listaProductos.agregar(new Producto(idCounter++, "Naranja", 30, 0.99));
+        listaProductos.agregar(new Producto(idCounter++, "Plátano", 20, 1.1));
+        listaProductos.agregar(new Producto(idCounter++, "Uva", 100, 2.5));
+        listaProductos.agregar(new Producto(idCounter++, "Pera", 40, 1.75));
+
+        // Mostrar los productos iniciales
+        window.onload = mostrarProductos;
+    </script>
+</head>
+<body>
+    <h1>Agregar, Eliminar y Ordenar Productos (Lista Ligada Simple)</h1>
+
+    <div id="formulario">
+        <h2>Agregar un producto</h2>
+        <input type="text" id="nombreNuevoProducto" placeholder="Nombre del nuevo producto">
+        <input type="number" id="cantidadNuevoProducto" placeholder="Cantidad" min="1">
+        <input type="number" id="precioNuevoProducto" placeholder="Precio del nuevo producto" step="0.01">
+        <button onclick="agregarProductoDesdeFormulario()">Agregar producto</button>
+    </div>
+
+    <div id="formularioEliminar">
+        <h2>Eliminar un producto</h2>
+        <input type="number" id="idProducto" placeholder="ID del producto a eliminar"> 
+        <button onclick="eliminarProducto()">Eliminar producto</button>
+    </div>
+
+    <h2>Productos:</h2>
+    <p id="productos"></p>
+
+</body>
+</html>

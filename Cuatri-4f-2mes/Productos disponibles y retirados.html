@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos disponibles y retirados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Productos disponibles y retirados</h1>
+
+    <h2>Añadir Producto</h2>
+    <input type="text" id="nombreNuevoProducto" placeholder="Nombre del producto">
+    <input type="number" id="cantidadNuevoProducto" placeholder="Cantidad" min="1">
+    <input type="number" id="precioNuevoProducto" placeholder="Precio" step="0.01">
+    <button onclick="agregarProducto()">Agregar producto</button>
+
+    <h2>Retirar Producto</h2>
+    <input type="text" id="nombreRetirarProducto" placeholder="Nombre del producto a retirar">
+    <input type="number" id="cantidadRetirarProducto" placeholder="Cantidad a retirar" min="1">
+    <button onclick="retirarProducto()">Retirar producto</button>
+
+    <h2>Productos en Almacén</h2>
+    <table id="tablaProductos">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas se llenarán mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Definición del Nodo de la Lista Ligada
+        class LLSNodo {
+            constructor(producto, next = null) {
+                this.producto = producto;
+                this.next = next;
+            }
+        }
+
+        // Clase para la lista ligada de productos
+        class ListaLigadaProductos {
+            constructor() {
+                this.head = null; // Inicialmente no hay productos
+            }
+
+            // Método para agregar un producto
+            agregar(producto) {
+                const nuevoNodo = new LLSNodo(producto);
+                if (!this.head) {
+                    this.head = nuevoNodo; // Si la lista está vacía, el nuevo nodo es la cabeza
+                } else {
+                    let actual = this.head;
+                    while (actual.next) {
+                        actual = actual.next; // Buscar el último nodo
+                    }
+                    actual.next = nuevoNodo; // Añadir al final de la lista
+                }
+            }
+
+            // Método para retirar un producto por su nombre y cantidad
+            retirar(nombreProducto, cantidad) {
+                let actual = this.head;
+
+                while (actual) {
+                    if (actual.producto.nombre === nombreProducto) {
+                        if (actual.producto.cantidad > cantidad) {
+                            actual.producto.cantidad -= cantidad; // Reducir cantidad
+                        } else {
+                            alert(`No hay suficiente cantidad para retirar ${cantidad}. Disponibles: ${actual.producto.cantidad}`);
+                        }
+                        return;
+                    }
+                    actual = actual.next;
+                }
+                alert(`Producto con nombre "${nombreProducto}" no encontrado.`);
+            }
+
+            // Recorrer la lista para una función de callback
+            recorrer(callback) {
+                let actual = this.head;
+                while (actual) {
+                    callback(actual.producto); // Ejecutar el callback con el producto del nodo
+                    actual = actual.next;
+                }
+            }
+        }
+
+        // Definición de un producto
+        class Producto {
+            constructor(nombre, cantidad, precio) {
+                this.nombre = nombre;
+                this.cantidad = cantidad;
+                this.precio = precio;
+            }
+        }
+
+        // Lista ligada de productos
+        const listaProductos = new ListaLigadaProductos();
+
+        // Mostrar los productos en la tabla
+        function mostrarProductos() {
+            const tablaProductos = document.getElementById("tablaProductos").getElementsByTagName('tbody')[0];
+
+            // Limpiar la tabla
+            tablaProductos.innerHTML = '';
+
+            // Recorrer la lista de productos y mostrarlos en la tabla
+            listaProductos.recorrer(producto => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${producto.nombre}</td><td>${producto.cantidad}</td><td>$${producto.precio.toFixed(2)}</td>`;
+                tablaProductos.appendChild(row);
+            });
+        }
+
+        // Función para agregar un nuevo producto
+        function agregarProducto() {
+            const nombre = document.getElementById("nombreNuevoProducto").value;
+            const cantidad = parseInt(document.getElementById("cantidadNuevoProducto").value);
+            const precio = parseFloat(document.getElementById("precioNuevoProducto").value);
+
+            if (nombre && !isNaN(cantidad) && cantidad > 0 && !isNaN(precio) && precio > 0) {
+                const nuevoProducto = new Producto(nombre, cantidad, precio);
+
+                // Añadir el nuevo producto a la lista ligada
+                listaProductos.agregar(nuevoProducto);
+                
+                mostrarProductos(); // Actualizar la tabla de productos
+
+                // Limpiar campos
+                document.getElementById("nombreNuevoProducto").value = '';
+                document.getElementById("cantidadNuevoProducto").value = '';
+                document.getElementById("precioNuevoProducto").value = '';
+            } else {
+                alert("Por favor ingresa todos los valores correctamente.");
+            }
+        }
+
+        // Función para retirar un producto por nombre y cantidad
+        function retirarProducto() {
+            const nombre = document.getElementById("nombreRetirarProducto").value;
+            const cantidad = parseInt(document.getElementById("cantidadRetirarProducto").value);
+
+            if (nombre && !isNaN(cantidad) && cantidad > 0) {
+                listaProductos.retirar(nombre, cantidad);
+                mostrarProductos(); // Actualizar la tabla de productos
+            } else {
+                alert("Por favor, ingresa un nombre de producto y una cantidad válida.");
+            }
+
+            // Limpiar campos
+            document.getElementById("nombreRetirarProducto").value = '';
+            document.getElementById("cantidadRetirarProducto").value = '';
+        }
+
+        // Inicializar lista de productos con algunos datos de ejemplo
+        listaProductos.agregar(new Producto("Manzana", 50, 1.25));
+        listaProductos.agregar(new Producto("Naranja", 30, 0.99));
+        listaProductos.agregar(new Producto("Plátano", 20, 1.1));
+        listaProductos.agregar(new Producto("Uva", 100, 2.5));
+        listaProductos.agregar(new Producto("Pera", 40, 1.75));
+
+        // Mostrar los productos iniciales
+        mostrarProductos();
+    </script>
+</body>
+</html>

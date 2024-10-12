@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Ligada de Aprobados y Reprobados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        .reprobado {
+            background-color: #ffdddd; /* Color rojo para reprobados */
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Aprobados y Reprobados (Lista Ligada Simple)</h1>
+
+    <h2>Añadir Alumno</h2>
+    <input type="text" id="nombreNuevoAlumno" placeholder="Nombre del alumno">
+    <input type="number" id="calificacionNuevoAlumno" placeholder="Calificación" step="0.1">
+    <button onclick="agregarAlumno()">Agregar alumno</button>
+
+    <h2>Aprobados</h2>
+    <table id="tablaAprobados">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Calificación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas se llenarán mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <h2>Reprobados</h2>
+    <table id="tablaReprobados">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Calificación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas se llenarán mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Definición del Nodo de la Lista Ligada
+        class LLSNodo {
+            constructor(info, next = null) {
+                this.info = info; 
+                this.next = next; 
+            }
+        }
+
+    
+        class ListaLigada {
+            constructor() {
+                this.head = null; 
+            }
+
+            // Añadir un nuevo nodo a la lista
+            agregar(info) {
+                const nuevoNodo = new LLSNodo(info);
+                if (!this.head) {
+                    this.head = nuevoNodo; // Si la lista está vacía, el nuevo nodo es la cabeza
+                } else {
+                    let actual = this.head;
+                    while (actual.next) {
+                        actual = actual.next; // Buscar el último nodo
+                    }
+                    actual.next = nuevoNodo; // Añadir al final de la lista
+                }
+            }
+
+            // Recorrer la lista para una función de callback
+            recorrer(callback) {
+                let actual = this.head;
+                while (actual) {
+                    callback(actual.info); // Ejecutar callback con la información del nodo
+                    actual = actual.next;
+                }
+            }
+        }
+
+        // Definición de un alumno
+        class Alumno {
+            constructor(nombre, calificacion) {
+                this.nombre = nombre;
+                this.calificacion = calificacion;
+            }
+        }
+
+        // Listas ligadas para aprobados y reprobados
+        const listaAprobados = new ListaLigada();
+        const listaReprobados = new ListaLigada();
+
+        // Mostrar las listas en las tablas correspondientes
+        function mostrarListas() {
+            const tablaAprobados = document.getElementById("tablaAprobados").getElementsByTagName('tbody')[0];
+            const tablaReprobados = document.getElementById("tablaReprobados").getElementsByTagName('tbody')[0];
+
+            // Limpiar tablas
+            tablaAprobados.innerHTML = '';
+            tablaReprobados.innerHTML = '';
+
+            // Recorrer y mostrar aprobados
+            listaAprobados.recorrer(alumno => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${alumno.nombre}</td><td>${alumno.calificacion}</td>`;
+                tablaAprobados.appendChild(row);
+            });
+
+            // Recorrer y mostrar reprobados
+            listaReprobados.recorrer(alumno => {
+                const row = document.createElement("tr");
+                row.classList.add("reprobado"); // Aplicar estilo de reprobado
+                row.innerHTML = `<td>${alumno.nombre}</td><td>${alumno.calificacion}</td>`;
+                tablaReprobados.appendChild(row);
+            });
+        }
+
+        // Función para agregar un nuevo alumno
+        function agregarAlumno() {
+            const nombre = document.getElementById("nombreNuevoAlumno").value;
+            const calificacion = parseFloat(document.getElementById("calificacionNuevoAlumno").value);
+
+            if (nombre && !isNaN(calificacion)) {
+                const nuevoAlumno = new Alumno(nombre, calificacion);
+
+                // Clasificar en aprobados o reprobados
+                if (calificacion >= 7) {
+                    listaAprobados.agregar(nuevoAlumno);
+                } else {
+                    listaReprobados.agregar(nuevoAlumno);
+                }
+
+                mostrarListas(); // Actualizar tablas
+
+                // Limpiar campos
+                document.getElementById("nombreNuevoAlumno").value = '';
+                document.getElementById("calificacionNuevoAlumno").value = '';
+            } else {
+                alert("Por favor ingresa todos los valores correctamente.");
+            }
+        }
+
+// Inicializar listaAprobados con 10 alumnos
+listaAprobados.agregar(new Alumno("Juan", 8));
+listaAprobados.agregar(new Alumno("María", 9));
+listaAprobados.agregar(new Alumno("Luis", 7));
+listaAprobados.agregar(new Alumno("José", 10));
+listaAprobados.agregar(new Alumno("Paula", 7.5));
+listaAprobados.agregar(new Alumno("Gabriel", 9));
+listaAprobados.agregar(new Alumno("Sofía", 8));
+listaAprobados.agregar(new Alumno("Carlos", 8.5));
+listaAprobados.agregar(new Alumno("Elena", 9));
+listaAprobados.agregar(new Alumno("Adriana", 8));
+
+// Inicializar listaReprobados con 10 alumnos
+listaReprobados.agregar(new Alumno("Pedro", 5));
+listaReprobados.agregar(new Alumno("Ana", 6));
+listaReprobados.agregar(new Alumno("Laura", 4));
+listaReprobados.agregar(new Alumno("Diego", 3));
+listaReprobados.agregar(new Alumno("Silvia", 5));
+listaReprobados.agregar(new Alumno("Rubén", 2));
+listaReprobados.agregar(new Alumno("Fernando", 6));
+listaReprobados.agregar(new Alumno("Alejandro", 5.5));
+listaReprobados.agregar(new Alumno("Carmen", 4));
+listaReprobados.agregar(new Alumno("Marta", 6));
+
+        // Mostrar las listas iniciales
+        mostrarListas();
+    </script>
+</body>
+</html>
+

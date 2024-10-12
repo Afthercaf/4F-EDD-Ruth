@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pares e Impares (Lista Ligada)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #28a745;
+        }
+        p {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        // Definición del Nodo de la Lista Ligada
+        class LLSNodo {
+            constructor(info, next = null) {
+                this.info = info; 
+                this.next = next; 
+            }
+        }
+
+        // Clase para manejar la Lista Ligada
+        class ListaLigada {
+            constructor() {
+                this.head = null; 
+            }
+
+            // Método para agregar un número a la lista ligada
+            agregar(info) {
+                const nuevoNodo = new LLSNodo(info);
+                if (!this.head) {
+                    this.head = nuevoNodo; // Si la lista está vacía, el nuevo nodo es la cabeza
+                } else {
+                    let actual = this.head;
+                    while (actual.next) {
+                        actual = actual.next; // Buscar el último nodo
+                    }
+                    actual.next = nuevoNodo; // Añadir al final de la lista
+                }
+            }
+
+            // Método para recorrer la lista y ejecutar una función de callback
+            recorrer(callback) {
+                let actual = this.head;
+                while (actual) {
+                    callback(actual.info); // Ejecutar callback con la información del nodo
+                    actual = actual.next;
+                }
+            }
+        }
+
+        // Función para separar números pares e impares y mostrar en listas ligadas
+        function separarParesImpares() {
+            const listaNumeros = Array.from({ length: 20 }, () => Math.floor(Math.random() * 100)); // Generar lista de números aleatorios
+
+            const listaPares = new ListaLigada();   // Crear lista ligada para pares
+            const listaImpares = new ListaLigada(); // Crear lista ligada para impares
+
+            // Separar números en listas ligadas
+            listaNumeros.forEach(num => {
+                if (num % 2 === 0) {
+                    listaPares.agregar(num);  // Agregar a la lista de pares
+                } else {
+                    listaImpares.agregar(num); // Agregar a la lista de impares
+                }
+            });
+
+            // Mostrar números pares e impares usando las listas ligadas
+            let resultadoPares = '';
+            let resultadoImpares = '';
+
+            listaPares.recorrer(num => {
+                resultadoPares += num + ', ';
+            });
+
+            listaImpares.recorrer(num => {
+                resultadoImpares += num + ', ';
+            });
+
+            // Mostrar los resultados
+            document.getElementById("pares").innerHTML = resultadoPares.slice(0, -2); // Eliminar la última coma
+            document.getElementById("impares").innerHTML = resultadoImpares.slice(0, -2); // Eliminar la última coma
+        }
+    </script>
+</head>
+<body onload="separarParesImpares()">
+    <h1>Números Pares e Impares (Lista Ligada)</h1>
+    
+    <h2>Pares</h2>
+    <p id="pares"></p>
+    
+    <h2>Impares</h2>
+    <p id="impares"></p>
+</body>
+</html>
+
