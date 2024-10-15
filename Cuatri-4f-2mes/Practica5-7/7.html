@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 7 - Verificar Palíndromo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        button, input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Verificar Palíndromo</h1>
+    <input type="text" id="palabraPalindromo" placeholder="Ingrese una palabra">
+    <button onclick="verificarPalindromo()">Verificar</button>
+    <h2>Resultado:</h2>
+    <p id="resultadoPalindromo"></p>
+
+    <script>
+        // Clase Nodo para representar cada letra
+        class Nodo {
+            constructor(letra, next = null) {
+                this.letra = letra; // Almacena la letra
+                this.next = next; // Apunta al siguiente nodo
+            }
+        }
+
+        // Clase para manejar la lista ligada que representa la palabra
+        class ListaLigada {
+            constructor() {
+                this.head = null; // Inicialmente, la lista está vacía
+            }
+
+            // Método para agregar una letra al final de la lista
+            agregarLetraFinal(letra) {
+                const nuevoNodo = new Nodo(letra);
+                if (this.head === null) {
+                    this.head = nuevoNodo; // Si la lista está vacía, el nuevo nodo es la cabeza
+                } else {
+                    let actual = this.head;
+                    while (actual.next !== null) {
+                        actual = actual.next; // Avanzamos hasta el último nodo
+                    }
+                    actual.next = nuevoNodo; // Asignamos el nuevo nodo al final
+                }
+            }
+        }
+
+        // Clase Palabra que maneja la verificación de palíndromos
+        class Palabra {
+            constructor(palabra) {
+                this.lista = new ListaLigada();
+                this.palabraNormal = ''; // Almacena la palabra normal
+                this.palabraInvertida = ''; // Almacena la palabra invertida
+
+                // Agregamos cada letra de la palabra a la lista
+                for (let i = 0; i < palabra.length; i++) {
+                    this.lista.agregarLetraFinal(palabra.charAt(i));
+                }
+            }
+
+            // Método para verificar si la palabra es un palíndromo
+            esPalindromo() {
+                let actual = this.lista.head;
+
+                // Construimos la palabra normal y la invertida al mismo tiempo
+                while (actual !== null) {
+                    this.palabraNormal += actual.letra; // Construimos la palabra normal
+                    this.palabraInvertida = actual.letra + this.palabraInvertida; // Agregamos la letra al inicio para invertir
+                    actual = actual.next;
+                }
+
+                // Comparamos la palabra normal con la invertida
+                return this.palabraNormal === this.palabraInvertida;
+            }
+        }
+
+        // Función para verificar si la palabra ingresada es un palíndromo
+        function verificarPalindromo() {
+            const palabra = document.getElementById('palabraPalindromo').value;
+            const palabraObjeto = new Palabra(palabra); // Creamos una instancia de la clase Palabra
+
+            // Verificamos si es un palíndromo y mostramos el resultado
+            const esPalindromo = palabraObjeto.esPalindromo();
+            document.getElementById('resultadoPalindromo').innerText = esPalindromo ? 'Es un palíndromo.' : 'No es un palíndromo.';
+        }
+    </script>
+</body>
+</html>

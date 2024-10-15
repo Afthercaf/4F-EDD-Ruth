@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 6 - Invertir una Palabra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        button, input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Invertir una Palabra</h1>
+    <input type="text" id="palabraInvertir" placeholder="Ingrese una palabra">
+    <button onclick="invertirPalabra()">Invertir</button>
+    <h2>Palabra invertida:</h2>
+    <p id="resultadoInvertir"></p>
+
+    <script>
+        // Nodo para representar cada letra
+        class Nodo {
+            constructor(letra, next = null) {
+                this.letra = letra;
+                this.next = next;
+            }
+        }
+
+        // Lista ligada para manejar la inversión de la palabra
+        class ListaLigada {
+            constructor() {
+                this.head = null;
+            }
+
+            agregarLetraInicio(letra) {
+                const nuevoNodo = new Nodo(letra, this.head); // Agregamos al inicio para invertir
+                this.head = nuevoNodo;
+            }
+
+            mostrarPalabra() {
+                let actual = this.head;
+                let resultado = '';
+                while (actual !== null) {
+                    resultado += actual.letra; // Construimos la palabra invertida
+                    actual = actual.next;
+                }
+                return resultado;
+            }
+        }
+
+        function invertirPalabra() {
+            const palabra = document.getElementById('palabraInvertir').value;
+            const lista = new ListaLigada();
+
+            for (let i = 0; i < palabra.length; i++) {
+                lista.agregarLetraInicio(palabra.charAt(i)); // Agregamos cada letra al inicio
+            }
+
+            document.getElementById('resultadoInvertir').innerText = lista.mostrarPalabra();
+        }
+    </script>
+</body>
+</html>

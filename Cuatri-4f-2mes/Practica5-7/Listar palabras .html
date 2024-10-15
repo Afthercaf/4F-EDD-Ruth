@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 5 - Listar Palabras por Letra Inicial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #007BFF;
+        }
+        button, input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Listar Palabras por Letra Inicial</h1>
+    <input type="text" id="palabra" placeholder="Ingrese una palabra">
+    <button onclick="agregarPalabra()">Agregar palabra</button>
+    <h2>Listas por letra:</h2>
+    <div id="resultado"></div>
+
+    <script>
+        // Nodo para representar cada palabra
+        class Nodo {
+            constructor(palabra, next = null) {
+                this.palabra = palabra;
+                this.next = next;
+            }
+        }
+
+        // Lista ligada para manejar las palabras por letra
+        class ListaLigada {
+            constructor() {
+                this.head = null;
+            }
+
+            agregarPalabra(palabra) {
+                const nuevoNodo = new Nodo(palabra);
+                if (!this.head) {
+                    this.head = nuevoNodo;
+                } else {
+                    let actual = this.head;
+                    while (actual.next !== null) {
+                        actual = actual.next;
+                    }
+                    actual.next = nuevoNodo;
+                }
+            }
+
+            mostrarPalabras() {
+                let actual = this.head;
+                let resultado = '';
+                while (actual !== null) {
+                    resultado += actual.palabra + ', ';
+                    actual = actual.next;
+                }
+                return resultado.slice(0, -2); // Quitar la última coma
+            }
+        }
+
+        // Diccionario de listas por letra inicial
+        const listasPorLetra = {};
+
+        function agregarPalabra() {
+            const palabra = document.getElementById('palabra').value;
+            const letraInicial = palabra.charAt(0).toLowerCase();
+
+            if (!listasPorLetra[letraInicial]) {
+                listasPorLetra[letraInicial] = new ListaLigada(); // Creamos la lista si no existe
+            }
+
+            listasPorLetra[letraInicial].agregarPalabra(palabra);
+            mostrarListas();
+            document.getElementById('palabra').value = ''; // Limpiar el campo de entrada
+        }
+
+        function mostrarListas() {
+            const resultadoDiv = document.getElementById('resultado');
+            resultadoDiv.innerHTML = ''; // Limpiar contenido previo
+
+            // Obtener las letras iniciales y ordenarlas
+            const letrasOrdenadas = Object.keys(listasPorLetra).sort();
+
+            letrasOrdenadas.forEach(letra => {
+                const lista = listasPorLetra[letra].mostrarPalabras();
+                resultadoDiv.innerHTML += `<strong>Letra ${letra.toUpperCase()}:</strong> ${lista}<br>`;
+            });
+        }
+    </script>
+</body>
+</html>
