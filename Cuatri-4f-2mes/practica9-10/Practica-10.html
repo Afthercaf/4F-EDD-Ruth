@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventanilla de Banco</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ventanilla de un Banco</h1>
+        <div class="form-group">
+            <label for="nombre">Nombre del Cliente:</label>
+            <input type="text" id="nombre" placeholder="Nombre del cliente">
+        </div>
+        <div class="form-group">
+            <label for="movimiento">Tipo de Movimiento:</label>
+            <select id="movimiento">
+                <option value="Depósito">Depósito</option>
+                <option value="Retiro">Retiro</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+        </div>
+        <button onclick="agregarCliente()">Agregar Cliente</button>
+        <button onclick="atenderCliente()">Atender Cliente</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Turno</th>
+                    <th>Nombre</th>
+                    <th>Movimiento</th>
+                    <th>Hora de Llegada</th>
+                </tr>
+            </thead>
+            <tbody id="colaClientes"></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

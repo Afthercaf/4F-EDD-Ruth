@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reemplazar en Pila (Clase)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            flex: 1;
+        }
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .stack-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 10px;
+            min-height: 400px;
+            position: relative;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            position: relative;
+            border: 2px solid #e0e0e0;
+        }
+        .card.highlight {
+            animation: pulse 0.5s ease-in-out;
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-style: solid;
+            border-width: 10px;
+            border-color: transparent #e0e0e0 transparent transparent;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .empty-message {
+            color: #666;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pila (Clase) - Reemplazar Valor</h1>
+        <div class="input-group">
+            <label for="nuevo">Valor Nuevo:</label>
+            <input type="number" id="nuevo" placeholder="Ingrese el valor nuevo">
+        </div>
+        <div class="input-group">
+            <label for="viejo">Valor Viejo:</label>
+            <input type="number" id="viejo" placeholder="Ingrese el valor a reemplazar">
+        </div>
+        <div class="controls">
+            <button onclick="reemplazarValor()">Reemplazar Valor</button>
+            <button onclick="agregarValor()">Agregar Valor</button>
+            <button onclick="eliminarValor()">Eliminar Valor</button>
+        </div>
+        <div class="stack-container" id="pila"></div>
+    </div>
+
+    <script>
+class Pila {
+    constructor() {
+        this.elementos = [];
+    }
+
+    push(valor) {
+        this.elementos.push(valor);
+        this.actualizarVisualizacion();
+    }
+
+    pop() {
+        if (this.elementos.length > 0) {
+            const valor = this.elementos.pop();
+            this.actualizarVisualizacion();
+            return valor;
+        }
+        return null;
+    }
+
+    reemplazar(viejo, nuevo) {
+        // Buscar el último índice que coincida con el valor viejo
+        const indiceUltimo = this.elementos.lastIndexOf(viejo);
+
+        if (indiceUltimo !== -1) {  // Si el valor viejo se encontró
+            // Reemplazar el último valor encontrado con el valor nuevo
+            this.elementos[indiceUltimo] = nuevo;
+            // Actualizar visualización y resaltar el valor reemplazado
+            this.actualizarVisualizacion([indiceUltimo]);
+        }
+    }
+
+    actualizarVisualizacion(elementosResaltados = []) {
+        const pilaContainer = document.getElementById('pila');
+        pilaContainer.innerHTML = '';
+
+        if (this.elementos.length === 0) {
+            const emptyMessage = document.createElement('div');
+            emptyMessage.className = 'empty-message';
+            emptyMessage.textContent = 'La pila está vacía';
+            pilaContainer.appendChild(emptyMessage);
+            return;
+        }
+
+        this.elementos.forEach((valor, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.textContent = valor;
+
+            if (elementosResaltados.includes(index)) {
+                card.classList.add('highlight');
+                setTimeout(() => {
+                    card.classList.remove('highlight');
+                }, 1000);  // Des-resaltar después de 1 segundo
+            }
+
+            pilaContainer.appendChild(card);
+        });
+    }
+}
+
+
+        const pila = new Pila();
+        // Inicializar la pila con valores
+        [10, 20, 30, 35, 40, 50].forEach(valor => pila.push(valor));
+
+        function reemplazarValor() {
+            const nuevo = parseInt(document.getElementById('nuevo').value);
+            const viejo = parseInt(document.getElementById('viejo').value);
+            
+            if (!isNaN(nuevo) && !isNaN(viejo)) {
+                pila.reemplazar(viejo, nuevo);
+                document.getElementById('nuevo').value = '';
+                document.getElementById('viejo').value = '';
+            } else {
+                alert("Por favor, ingresa valores válidos.");
+            }
+        }
+
+        function agregarValor() {
+            const nuevo = parseInt(document.getElementById('nuevo').value);
+            if (!isNaN(nuevo)) {
+                pila.push(nuevo);
+                document.getElementById('nuevo').value = '';
+            } else {
+                alert("Por favor, ingresa un valor válido para agregar.");
+            }
+        }
+
+        function eliminarValor() {
+            const eliminado = pila.pop();
+            if (eliminado === null) {
+                alert("La pila está vacía.");
+            }
+        }
+    </script>
+</body>
+</html>

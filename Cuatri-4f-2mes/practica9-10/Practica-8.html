@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pila Animada</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --background: #f8fafc;
+            --card: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: #334155;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--card);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1e293b;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .stack-container {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            border: none;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        tbody tr {
+            background: white;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        #resultado {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #resultado.show {
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-1rem);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Pila</h1>
+        <div class="input-group">
+            <input type="text" id="numero" placeholder="Ingrese un número" autocomplete="off">
+            <button onclick="agregarNumero()">Agregar a la Pila</button>
+            <button onclick="sumarNumeros()">Calcular Suma</button>
+        </div>
+        <div class="stack-container">
+            <h2>Números en la Pila:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                    </tr>
+                </thead>
+                <tbody id="numerosPila"></tbody>
+            </table>
+        </div>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+        class Pila {
+            constructor() {
+                this.elementos = [];
+            }
+            
+            agregarElemento(elemento) {
+                this.elementos.push(elemento);
+            }
+            
+            quitarElemento() {
+                return this.elementos.pop();
+            }
+            
+            estaVacia() {
+                return this.elementos.length === 0;
+            }
+        }
+
+        const pilaNumeros = new Pila();
+
+        function agregarNumero() {
+            const inputElement = document.getElementById("numero");
+            const numero = inputElement.value;
+
+            if (numero && !isNaN(numero)) {
+                pilaNumeros.agregarElemento(numero);
+                actualizarPila();
+                inputElement.value = "";
+                inputElement.focus();
+            } else {
+                inputElement.classList.add('shake');
+                setTimeout(() => {
+                    inputElement.classList.remove('shake');
+                }, 400);
+            }
+        }
+
+        function actualizarPila() {
+            const tabla = document.getElementById("numerosPila");
+            tabla.innerHTML = "";
+            pilaNumeros.elementos.slice().reverse().forEach(num => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `<td>${num}</td>`;
+                tabla.appendChild(fila);
+            });
+        }
+
+        function sumarNumeros() {
+            let suma = 0;
+            while (!pilaNumeros.estaVacia()) {
+                suma += parseInt(pilaNumeros.quitarElemento());
+            }
+            
+            const resultadoElement = document.getElementById("resultado");
+            resultadoElement.innerText = `La suma total es: ${suma.toLocaleString()}`;
+            resultadoElement.classList.remove('show');
+            
+            // Forzar un reflow para reiniciar la animación
+            void resultadoElement.offsetWidth;
+            
+            resultadoElement.classList.add('show');
+            actualizarPila();
+        }
+
+        // Permitir usar Enter para agregar números
+        document.getElementById("numero").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                agregarNumero();
+            }
+        });
+    </script>
+</body>
+</html>

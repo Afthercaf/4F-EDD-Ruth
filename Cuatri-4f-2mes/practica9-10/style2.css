@@ -1,0 +1,141 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --car-size: 150px;
+    --color-swatch-size: 50px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+#restartButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#restartButton:hover {
+    background-color: darkblue;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.car-queue-horizontal {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.car-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    animation: car-enter 0.5s ease-out;
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+.color-palette {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.color-swatch {
+    width: var(--color-swatch-size);
+    height: var(--color-swatch-size);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.color-swatch.red {
+    background-color: #ff4d4d;
+}
+
+.color-swatch.green {
+    background-color: #4dff4d;
+}
+
+.color-swatch.blue {
+    background-color: #4d4dff;
+}
+
+.color-swatch.yellow {
+    background-color: #ffff4d;
+}
+
+.color-swatch.black {
+    background-color: #333;
+}
+
+.color-swatch:hover {
+    transform: scale(1.2);
+}
+
+.car-queue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.car-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    animation: car-enter 0.5s ease-out;
+}
+
+.car-image img {
+    width: var(--car-size);
+    height: auto;
+}
+
+.car-color-label {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--secondary-color);
+}
+
+.score-container {
+    margin-top: 30px;
+    font-size: 18px;
+    color: var(--secondary-color);
+}
+
+@keyframes car-enter {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
