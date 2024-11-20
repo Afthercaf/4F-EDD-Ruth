@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Árbol Binario 2</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: #1a2b4b;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .tree-container {
+            position: relative;
+            height: 600px;
+            margin: 20px auto;
+            transform: translateX(-50px);
+        }
+
+        .node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            z-index: 2;
+        }
+
+        .node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(37, 99, 235, 0.3);
+        }
+
+        .line {
+            position: absolute;
+            background-color: #94a3b8;
+            height: 2px;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #2563eb;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        }
+
+        .traversal-info {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .traversal-info h3 {
+            color: #1a2b4b;
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .traversal-path {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .traversal-node {
+            background-color: #3b82f6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .tree-container {
+                transform: scale(0.8) translateX(-100px);
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Árbol Binario 2</h2>
+        <div class="tree-container" id="treeContainer2"></div>
+        <div class="controls">
+            <button onclick="traverseTree('preorder')">Preorden</button>
+            <button onclick="traverseTree('inorder')">Inorden</button>
+            <button onclick="traverseTree('postorder')">Postorden</button>
+            <button onclick="traverseTree('bfs')">Por Niveles</button>
+        </div>
+        <div class="traversal-info">
+            <h3>Recorrido actual:</h3>
+            <div class="traversal-path" id="traversalPath"></div>
+        </div>
+    </div>
+
+    <script>
+        class Node {
+            constructor(value, x, y) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        // Crear el árbol con posiciones más precisas
+        const root2 = new Node('F', 500, 50);
+        root2.left = new Node('B', 300, 150);
+        root2.right = new Node('G', 700, 150);
+        root2.left.left = new Node('A', 200, 250);
+        root2.left.right = new Node('D', 400, 250);
+        root2.left.right.left = new Node('C', 350, 350);
+        root2.left.right.right = new Node('E', 450, 350);
+        root2.right.right = new Node('I', 800, 250);
+        root2.right.right.left = new Node('H', 750, 350);
+
+        function drawTree2() {
+            const container = document.getElementById('treeContainer2');
+            container.innerHTML = '';
+
+            function drawNode(node) {
+                if (!node) return;
+
+                // Dibujar líneas primero para que queden detrás de los nodos
+                if (node.left) {
+                    drawLine(node, node.left);
+                }
+                if (node.right) {
+                    drawLine(node, node.right);
+                }
+
+                const nodeEl = document.createElement('div');
+                nodeEl.className = 'node';
+                nodeEl.style.left = `${node.x - 25}px`;
+                nodeEl.style.top = `${node.y - 25}px`;
+                nodeEl.textContent = node.value;
+                container.appendChild(nodeEl);
+
+                if (node.left) drawNode(node.left);
+                if (node.right) drawNode(node.right);
+            }
+
+            function drawLine(parent, child) {
+                const line = document.createElement('div');
+                line.className = 'line';
+                const dx = child.x - parent.x;
+                const dy = child.y - parent.y;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx);
+
+                line.style.width = `${length}px`;
+                line.style.left = `${parent.x}px`;
+                line.style.top = `${parent.y}px`;
+                line.style.transform = `rotate(${angle}rad)`;
+                container.appendChild(line);
+            }
+
+            drawNode(root2);
+        }
+
+        function traverseTree(order) {
+            const traversalPath = [];
+            const traversalDiv = document.getElementById('traversalPath');
+            
+            function preOrder(node) {
+                if (node) {
+                    traversalPath.push(node.value);
+                    preOrder(node.left);
+                    preOrder(node.right);
+                }
+            }
+
+            function inOrder(node) {
+                if (node) {
+                    inOrder(node.left);
+                    traversalPath.push(node.value);
+                    inOrder(node.right);
+                }
+            }
+
+            function postOrder(node) {
+                if (node) {
+                    postOrder(node.left);
+                    postOrder(node.right);
+                    traversalPath.push(node.value);
+                }
+            }
+
+            function bfs(node) {
+                const queue = [node];
+                while (queue.length > 0) {
+                    const current = queue.shift();
+                    traversalPath.push(current.value);
+                    if (current.left) queue.push(current.left);
+                    if (current.right) queue.push(current.right);
+                }
+            }
+
+            switch(order) {
+                case 'preorder':
+                    preOrder(root2);
+                    break;
+                case 'inorder':
+                    inOrder(root2);
+                    break;
+                case 'postorder':
+                    postOrder(root2);
+                    break;
+                case 'bfs':
+                    bfs(root2);
+                    break;
+            }
+
+            // Mostrar el recorrido
+            traversalDiv.innerHTML = traversalPath.map(value => 
+                `<span class="traversal-node">${value}</span>`
+            ).join('');
+        }
+
+        // Inicializar el árbol
+        drawTree2();
+    </script>
+</body>
+</html>

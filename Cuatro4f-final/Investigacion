@@ -1,0 +1,97 @@
+# Análisis de los Cuatro Recorridos en Árboles Binarios
+
+## 1. RECORRIDO EN AMPLITUD (Por Niveles)
+Visita los nodos nivel por nivel, de izquierda a derecha.
+
+### Árbol 1:
+- Recorrido: h, i, m, e, a-
+
+### Árbol 2:
+- Recorrido: F, B, G, A, D, I, C, E, H
+
+### Árbol 3:
+- Recorrido: 55, 53, 59, 48, 54, 56, 63, 51, 57, 61, 70
+
+### Árbol 4:
+- Recorrido: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R
+
+### Árbol 5:
+- Recorrido: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, X, Y
+
+## 2. RECORRIDO EN PROFUNDIDAD
+Se divide en tres tipos:
+
+### 2.1. PREORDEN (Raíz - Izquierda - Derecha)
+
+#### Árbol 1:
+- Recorrido: h, i, e, m, a*
+
+#### Árbol 2:
+- Recorrido: F, B, A, D, C, E, G, I, H
+
+#### Árbol 3:
+- Recorrido: 55, 53, 48, 51, 54, 59, 56, 57, 63, 61, 70
+
+#### Árbol 4:
+- Recorrido: A B D E J Q K R F C G L M N H Ñ O P I
+
+#### Árbol 5:
+- Recorrido: A, B, D, H, I, E, J, K, C, F, L, M, G, N, O, X, Y
+
+### 2.2. INORDEN (Izquierda - Raíz - Derecha)
+
+#### Árbol 1:
+- Recorrido: ['e', 'i', 'h', 'm', 'a']
+
+#### Árbol 2:
+- Recorrido: A, B, C, D, E, F, G, H, I
+
+#### Árbol 3:
+- Recorrido: 48, 51, 53, 54, 55, 56, 57, 59, 61, 63, 70
+
+#### Árbol 4:
+- Recorrido: A B C D E F G H I J K L M N Ñ O P Q R
+
+#### Árbol 5:
+- Recorrido: H D I B J E K A L F M C N G Y X O
+
+### 2.3. POSTORDEN (Izquierda - Derecha - Raíz)
+
+#### Árbol 1:
+- Recorrido: ['e', 'i', 'a', 'm', 'h']
+
+
+#### Árbol 2:
+- Recorrido: A, C, E, D, B, H, I, G, F
+
+#### Árbol 3:
+- Recorrido: 51, 48, 54, 53, 57, 56, 61, 70, 63, 59, 55
+
+#### Árbol 4:
+- Recorrido:  D Q J R K E F B L M N G Ñ O P H I C A
+
+#### Árbol 5:
+- Recorrido: H, I, D, J, K, E, B, L, M, F, N, O, Y, X, G, C, A
+
+## Características Principales de cada Recorrido:
+
+1. **Recorrido en Amplitud**:
+   - Visita nivel por nivel
+   - Útil para encontrar el camino más corto
+   - Requiere una estructura de cola (queue)
+
+2. **Recorrido en Profundidad**:
+   2.1. **Preorden**:
+   - Visita primero la raíz
+   - Útil para copiar/duplicar el árbol
+   - Preserva la estructura del árbol
+
+   2.2. **Inorden**:
+   - En árboles BST da elementos ordenados
+   - Visita subárbol izquierdo, raíz, subárbol derecho
+   - Útil para obtener expresiones algebraicas
+
+   2.3. **Postorden**:
+   - Visita la raíz al final
+   - Útil para eliminar nodos y subárboles
+   - Se usa en evaluación de expresiones
